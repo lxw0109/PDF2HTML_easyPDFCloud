@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 #coding:utf-8
-#如果想有中文注释就必须得有上面的语句
 
 import urllib
 import urllib2

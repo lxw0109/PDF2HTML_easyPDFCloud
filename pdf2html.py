@@ -5,8 +5,7 @@ import urllib
 import urllib2
 import traceback
 import json
-
-accessToken = "AAEAAH_qAbJTLWN03dqOTD2rQmM_C0SpaPxnAiu9xpXdv39oqg5kdeWz1ipIJBsCLpskISAircLmZ9CNUdEZZNlNG_LNGntivnhicep7DfDD7VpAp0sUVuoulvRM5V0w-6_DmGtT3CyambztSMeVCsPz11sxxLVjrMbsTL-pVQGqNdnWgMwvVjMCUAhsAOY9q1Mtr8YSCPq1i-TtyLORFWbMsJXQvvdYbrGPmFTEjsS9EwLqK4PSAFVAbNiH523QNmqnfdpV6d8ydQQMGBp-w9AZRdOlV_pUCOyu022CMb_F5xq_tuavwzfs2L_8XfwhVFV0JTaOZPOmLN2j1zJFwYY00wrEAQAAAAEAAKCmOlQaxBAU8j5D-Fx3UfqdeODP-3N4To-x3OMW21VwlwM8f4rNpWoUum5wiL8OGKYIKaWahtyzN8Hor72c4GEqYaojU9f1djWLlS_qnlADCXS26p9aJgDG1jGw1O9fQQDjBbVCz3ESx-5QmMiGAe1GkIE2i5S63CPlurbbIgiDlQVuWmm6K8lFc8Xv2WIFZqhG7GVx1arCPu1fYMf0xrlcjPlrMFvSbA_ucUYSo2EthigU5T3DSU6VOfQZ8JW6F0SK76RQJAbcygt9JYYulLrXLFFgMXo3I8FUpZlsJ5XIR119KTb9jR0pzWV_3w6Mx0wIH0Y-NCPj4ftDr-rKJVckuL4IB0O-a0zCXVlsftfPRGz7Obn31QAei7oLBNtEgYxE2-69U_hsuET008dhUuo20aA1bm5uxMGSNA-qCoYnIJQOLclE2mUdAsHU4BRlk0wAtQLd-0HkHv9qpiZ9FT_tQ2LOJKgB9qG3aR8dHrtXvCPcWscXutdYASqBW7lL07TfZXijXLGT9bVSfDS8oMbCiOrV4-d8oPUsWdc8mmcx2Fk3NYJUNmZSDRyxZ4bB3gYaHpPEuKGbIHskYLoBoKs"
+import sys
 
 def getAccessToken():
 	"""
@@ -19,10 +18,16 @@ def getAccessToken():
 		print "formData: ", formData
 		request = urllib2.Request(url="https://www.easypdfcloud.com/oauth2/token", data=formData, headers=headers)
 		sourceCode  = json.loads(urllib2.urlopen(request).read())
-		print "Access Token:\n", sourceCode["access_token"]
+		print "Get Access Token:\n", sourceCode["access_token"]
+		return sourceCode["access_token"]
 	except Exception as e:
 		print traceback.format_exc()
-	
+
+try:
+	accessToken = getAccessToken()
+except Exception as e:
+	sys.exit(1)
+
 def createJob():
 	"""
 	POST/PUT a pdf file. And create a new job to convert this pdf file.
@@ -45,11 +50,16 @@ def createJob():
 		request = urllib2.Request(url="https://api.easypdfcloud.com/v1/workflows/0000000005385BCA/jobs?file=thinkphp.pdf&start=true&test=false", data=data, headers=headers)
 		request.get_method = lambda: 'PUT'
 		sourceCode  = json.loads(urllib2.urlopen(request).read())
-		print "jobID:\n", sourceCode["jobID"]
+		print "Get jobID:\n", sourceCode["jobID"]
+		return sourceCode["jobID"]
 	except Exception as e:
 		print traceback.format_exc()
 
-jobID = "000000000060925B"
+try:
+	jobID = createJob()
+except Exception as e:
+	sys.exit(1)
+
 def waitJobCompletion(): #0000000000609211
 	"""
 	Judge whether the job has finished.
@@ -65,7 +75,8 @@ def waitJobCompletion(): #0000000000609211
 		request = urllib2.Request(url="https://api.easypdfcloud.com/v1/jobs/"+ jobID + "/event", headers=headers)
 		request.get_method = lambda: 'POST'
 		sourceCode = json.loads(urllib2.urlopen(request).read())
-		print "Finished Flag:\n", sourceCode["finished"] # True
+		#print "Finished Flag:\n", sourceCode["finished"] # True
+		return sourceCode["finished"]
 	except Exception as e:
 		print traceback.format_exc()
 
@@ -81,15 +92,20 @@ def downloadFile():
 		request = urllib2.Request(url="https://api.easypdfcloud.com/v1/jobs/"+ jobID + "/output?type=file", headers=headers)
 		request.get_method = lambda: 'GET'
 		sourceCode = urllib2.urlopen(request).read()
-		print sourceCode
+		#print sourceCode
+		with open("./" + jobID + ".zip", "wr") as f:
+			f.write(sourceCode)
+
 	except Exception as e:
 		print traceback.format_exc()
 		
-
 def main():
-	#getAccessToken()
-	#createJob()
-	#waitJobCompletion()
+	try:
+		while not waitJobCompletion():
+			pass
+	except Exception as e:
+		sys.exit(1)
+	print "Job completed!"
 	downloadFile()	 #python pdf2html.py > a.zip    then unzip the zip file.
 
 if __name__ == '__main__':

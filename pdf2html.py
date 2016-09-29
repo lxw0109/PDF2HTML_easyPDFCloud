@@ -106,7 +106,7 @@ def main():
 	except Exception as e:
 		sys.exit(1)
 	print "Job completed!"
-	downloadFile()	 #python pdf2html.py > a.zip    then unzip the zip file.
+	downloadFile()
 
 if __name__ == '__main__':
 	main()

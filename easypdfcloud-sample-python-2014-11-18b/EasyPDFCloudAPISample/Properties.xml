@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+    <!-- OAuth 2.0 Client ID (ClientID) -->
+    <!--
+        Client ID. You can get your client ID from the developer page
+       (for registered user, you must sign in before visiting this page)
+       https://www.easypdfcloud.com/developer
+
+       To test the sample code quickly for demo purpose, you can use
+       the following demo client ID:
+
+       05ee808265f24c66b2b8e31d90c31ab1
+    -->
+    <!-- <entry key="ClientID">05ee808265f24c66b2b8e31d90c31ab1</entry> -->
+    <entry key="ClientID">2e203051b6594f5a9763b5ffbeed3aa9</entry>
+
+
+    <!-- OAuth 2.0 Client Secret (ClientSecret) -->
+    <!--
+       Client secret. You can get your client secret from the developer page
+       (for registered user, you must sign in before visiting this page)
+       https://www.easypdfcloud.com/developer
+
+       To test the sample code quickly for demo purpose, you can use
+       the following demo client secret:
+
+       16ABE87E052059F147BB2A491944BF7EA7876D0F843DED105CBA094C887CBC99
+    -->
+    <!-- <entry key="ClientSecret">16ABE87E052059F147BB2A491944BF7EA7876D0F843DED105CBA094C887CBC99</entry> -->
+    <entry key="ClientSecret">B5C6434F7F62B1229057C798217DD7D8BBA9B3A8FC76F0DC3D7072E195B366D7</entry>
+
+    <!-- Target Workflow ID (WorkflowID)-->
+	<!--
+        Workflow ID. You can get your workflow ID from the developer page
+        (for registered user, you must sign in before visiting this page)
+        https://www.easypdfcloud.com/developer
+
+        To test the sample code quickly for demo purpose, you can use
+        one of the following demo workflow IDs:
+
+       00000000048585C1 : "Convert Files to PDF" workflow
+       00000000048585C2 : "Convert PDF to Word" workflow
+	-->
+    <entry key="WorkflowID">0000000005385BCA</entry>
+
+    <!-- Input File Path (InputPath)-->
+    <entry key="InputPath">/home/lxw/Documents/PDF2HTML_easyPDFCloud</entry>
+
+    <!-- Output File Path (OutputPath)-->
+    <entry key="OutputPath">/home/lxw/Documents/PDF2HTML_easyPDFCloud</entry>
+
+    <!-- Input File Name (FileName)-->
+    <entry key="FileName">table.pdf</entry>
+</properties>

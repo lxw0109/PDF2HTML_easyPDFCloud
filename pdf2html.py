@@ -25,6 +25,7 @@ def getAccessToken():
 		print traceback.format_exc()
 
 try:
+	print "Getting Access Token."
 	accessToken = getAccessToken()
 except Exception as e:
 	sys.exit(1)
@@ -46,9 +47,12 @@ def createJob():
 		} 
 
 		#data should be the content of the pdf file.
-		with open("./thinkphp.pdf", "rb") as f:
+		#fileName = "table_down.pdf"
+		fileName = "table.pdf"
+		with open(fileName, "rb") as f:
 			data = f.read()
-		request = urllib2.Request(url="https://api.easypdfcloud.com/v1/workflows/0000000005385BCA/jobs?file=thinkphp.pdf&start=true&test=false", data=data, headers=headers)
+		myURL = "https://api.easypdfcloud.com/v1/workflows/0000000005385BCA/jobs?file={0}&start=true&test=false".format(fileName)
+		request = urllib2.Request(url=myURL, data=data, headers=headers)
 		request.get_method = lambda: 'PUT'
 		sourceCode  = json.loads(urllib2.urlopen(request).read())
 		print "Get jobID:\n", sourceCode["jobID"]
@@ -57,6 +61,7 @@ def createJob():
 		print traceback.format_exc()
 
 try:
+	print "Creating Job."
 	jobID = createJob()
 except Exception as e:
 	sys.exit(1)
@@ -101,6 +106,7 @@ def downloadFile():
 		print traceback.format_exc()
 		
 def main():
+	print "In main()."
 	try:
 		while not waitJobCompletion():
 			pass
